@@ -12,9 +12,11 @@ permissions:
   pages: write
   id-token: write
 
+# Superseded runs of the same branch/PR are cancelled; the Pages deployment
+# itself is serialized separately via the deploy job's concurrency group.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -33,6 +35,9 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: test
     runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
