@@ -62,9 +62,28 @@ function togglePage(index: number, card: HTMLElement): void {
     card.classList.add('selected');
   }
   updateSelectionLabel();
-  showPreview(index, card);
+
+  if (state.selected.has(index)) {
+    showPreview(index, card);
+  } else if (previewedIndex === index) {
+    // The previewed page was deselected: fall back to the most recently
+    // selected page, or clear the pane when nothing is selected anymore.
+    previewLastSelectedOrClear();
+  }
 }
 
+function previewLastSelectedOrClear(): void {
+  if (!state) return;
+  const remaining = [...state.selected];
+  const fallback = remaining[remaining.length - 1];
+  if (fallback === undefined) {
+    resetPreviewPane();
+    return;
+  }
+  showPreview(fallback, pageGrid.querySelectorAll<HTMLElement>('.page-card')[fallback] ?? null);
+}
+
+let previewedIndex: number | null = null;
 let previewRequest = 0;
 // pdf.js forbids concurrent render() calls on one canvas, so renders are chained.
 let previewChain: Promise<void> = Promise.resolve();
@@ -73,6 +92,7 @@ function showPreview(index: number, card: HTMLElement | null): void {
   if (!state) return;
   const request = ++previewRequest;
   const preview = state.preview;
+  previewedIndex = index;
 
   for (const other of pageGrid.querySelectorAll('.page-card.previewed')) {
     other.classList.remove('previewed');
@@ -108,9 +128,13 @@ function showPreview(index: number, card: HTMLElement | null): void {
 
 function resetPreviewPane(): void {
   previewRequest++;
+  previewedIndex = null;
+  for (const card of pageGrid.querySelectorAll('.page-card.previewed')) {
+    card.classList.remove('previewed');
+  }
   previewFigure.hidden = true;
   previewPlaceholder.hidden = false;
-  previewPlaceholder.textContent = 'Click a page to see a large preview here.';
+  previewPlaceholder.textContent = 'Select a page to see a large preview here.';
 }
 
 async function openFile(file: File): Promise<void> {
@@ -135,8 +159,6 @@ async function openFile(file: File): Promise<void> {
 
     await renderGrid();
     updateSelectionLabel();
-    // Show the first page large right away so the pane isn't empty.
-    showPreview(0, pageGrid.querySelector<HTMLElement>('.page-card'));
     setStatus('Click pages to select them, or use a range below.');
   } catch (error) {
     setStatus(errorMessage(error, 'Could not read this PDF. It may be corrupted or password-protected.'), 'error');
@@ -217,6 +239,11 @@ mustGet<HTMLButtonElement>('#select-all').addEventListener('click', () => {
     card.classList.toggle('selected', state.selected.has(position));
   }
   updateSelectionLabel();
+  if (state.selected.size === 0) {
+    resetPreviewPane();
+  } else if (previewedIndex === null) {
+    previewLastSelectedOrClear();
+  }
 });
 
 mustGet<HTMLButtonElement>('#extract-selected').addEventListener('click', () => {
