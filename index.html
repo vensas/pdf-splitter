@@ -6,14 +6,42 @@
     <meta name="description" content="PDF Splitter by vensas GmbH — split PDF pages entirely in your browser. No upload, no server: your files never leave your machine." />
     <title>PDF Splitter · vensas GmbH</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Apply a manually chosen theme before first paint to avoid flashing.
+      try {
+        var storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'light' || storedTheme === 'dark') {
+          document.documentElement.dataset.theme = storedTheme;
+        }
+      } catch (ignored) {}
+    </script>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="vensas GmbH" />
+    <meta property="og:title" content="PDF Splitter · vensas GmbH" />
+    <meta property="og:description" content="Split PDF pages entirely in your browser. No upload, no server — your files never leave your machine." />
+    <meta property="og:url" content="https://vensas.github.io/pdf-splitter/" />
+    <meta property="og:image" content="https://vensas.github.io/pdf-splitter/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="One PDF being split into multiple PDF files" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PDF Splitter · vensas GmbH" />
+    <meta name="twitter:description" content="Split PDF pages entirely in your browser. No upload, no server — your files never leave your machine." />
+    <meta name="twitter:image" content="https://vensas.github.io/pdf-splitter/og-image.png" />
   </head>
   <body>
     <main class="app">
       <header>
-        <a class="brand" href="https://www.vensas.de" rel="noopener" aria-label="vensas GmbH website">
-          <img class="logo logo-light" src="/vensas_logo_light.svg" alt="vensas GmbH" height="28" />
-          <img class="logo logo-dark" src="/vensas_logo_dark.svg" alt="vensas GmbH" height="28" />
-        </a>
+        <div class="header-row">
+          <a class="brand" href="https://www.vensas.de" rel="noopener" aria-label="vensas GmbH website">
+            <img class="logo logo-light" src="/vensas_logo_light.svg" alt="vensas GmbH" height="28" />
+            <img class="logo logo-dark" src="/vensas_logo_dark.svg" alt="vensas GmbH" height="28" />
+          </a>
+          <button id="theme-toggle" type="button" title="Switch between automatic, light, and dark theme">
+            Theme: <span id="theme-label">Auto</span>
+          </button>
+        </div>
         <h1>PDF Splitter</h1>
         <p class="tagline">
           Split and extract PDF pages — entirely in your browser.
@@ -22,7 +50,14 @@
       </header>
 
       <section id="drop-zone" class="drop-zone" role="button" tabindex="0" aria-label="Choose or drop a PDF file">
+        <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <path d="M14 2v6h6" />
+          <path d="M12 18v-6" />
+          <path d="m9 15 3 3 3-3" />
+        </svg>
         <p><strong>Drop a PDF here</strong> or click to choose a file</p>
+        <p class="muted small drop-hint">Processed locally — nothing is uploaded</p>
         <input id="file-input" type="file" accept="application/pdf,.pdf" hidden />
       </section>
 

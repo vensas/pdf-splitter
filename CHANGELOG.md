@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.4.0 — 2026-07-06
+
+- Theme toggle in the header: Auto / Light / Dark, persisted across visits
+  and applied before first paint (no flash)
+- Social sharing: Open Graph and Twitter card meta tags with a branded
+  1200x630 preview image
+- Design polish: upload icon and privacy hint in the drop zone, subtle
+  header gradient, pill-style status messages, uppercase section labels,
+  refined buttons, shadows, and focus rings
+- Improved README with badges, screenshot, usage guide, and module overview
+
 ## 1.3.0 — 2026-07-06
 
 - The footer shows the current version, injected from package.json at

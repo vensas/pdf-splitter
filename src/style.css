@@ -1,6 +1,19 @@
 /* vensas brand palette — mirrors vensas-next tailwind.config.js */
 :root {
   color-scheme: light dark;
+}
+
+/* Manual theme override (set by the header toggle); light-dark() follows
+   the effective color-scheme, so this flips the whole palette. */
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root {
   --accent: light-dark(#6abea7, #88cbb9); /* brand ocean */
   --accent-contrast: light-dark(#ffffff, #1a2030);
   --accent-hover: light-dark(#4e9f8a, #a5d8ca);
@@ -19,7 +32,9 @@
 
 body {
   margin: 0;
-  background: var(--surface);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 24rem),
+    var(--surface);
   color: var(--text);
   line-height: 1.5;
 }
@@ -30,9 +45,26 @@ body {
   padding: 2rem 1.25rem 3rem;
 }
 
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+#theme-toggle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: transparent;
+}
+
+#theme-toggle:hover {
+  color: var(--text);
+}
+
 .brand {
   display: inline-block;
-  margin-bottom: 1.25rem;
 }
 
 .logo {
@@ -41,6 +73,8 @@ body {
   display: block;
 }
 
+/* Theme-dependent logo variant. The media query covers auto mode; the
+   data-theme rules win when the user picked a theme manually. */
 .logo-dark {
   display: none;
 }
@@ -55,13 +89,31 @@ body {
   }
 }
 
+:root[data-theme='light'] .logo-light {
+  display: block;
+}
+
+:root[data-theme='light'] .logo-dark {
+  display: none;
+}
+
+:root[data-theme='dark'] .logo-light {
+  display: none;
+}
+
+:root[data-theme='dark'] .logo-dark {
+  display: block;
+}
+
 header h1 {
-  margin: 0 0 0.25rem;
-  font-size: 1.75rem;
+  margin: 0 0 0.35rem;
+  font-size: 2.1rem;
+  letter-spacing: -0.02em;
 }
 
 .tagline {
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.75rem;
+  max-width: 42rem;
   color: var(--text-muted);
 }
 
@@ -78,23 +130,40 @@ header h1 {
 }
 
 .drop-zone {
-  border: 2px dashed var(--border);
-  border-radius: 0.75rem;
-  padding: 3rem 1.5rem;
+  border: 2px dashed color-mix(in srgb, var(--accent) 45%, var(--border));
+  border-radius: 1rem;
+  padding: 2.5rem 1.5rem;
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.15s, background-color 0.15s;
+  background: color-mix(in srgb, var(--card) 55%, transparent);
+  transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+.drop-zone p {
+  margin: 0.25rem 0 0;
+}
+
+.drop-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--accent);
 }
 
 .drop-zone:hover,
 .drop-zone:focus-visible,
 .drop-zone.dragging {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--card));
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 .drop-zone.compact {
-  padding: 1rem 1.5rem;
+  padding: 0.9rem 1.5rem;
+}
+
+.drop-zone.compact .drop-icon,
+.drop-zone.compact .drop-hint {
+  display: none;
 }
 
 .file-info {
@@ -231,15 +300,20 @@ header h1 {
 }
 
 .action-group {
-  padding: 1rem;
+  padding: 1.1rem;
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--card);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
 }
 
 .action-group h2 {
-  margin: 0 0 0.6rem;
-  font-size: 0.95rem;
+  margin: 0 0 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
 }
 
 .action-group button {
@@ -251,15 +325,24 @@ header h1 {
 button {
   padding: 0.5rem 0.9rem;
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
+  border-radius: 0.55rem;
   background: var(--card);
   font: inherit;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.1s;
+  transition: background-color 0.1s, box-shadow 0.1s, border-color 0.1s;
 }
 
 button:hover:not(:disabled) {
   background: color-mix(in srgb, var(--accent) 10%, var(--card));
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+
+button:focus-visible,
+.drop-zone:focus-visible,
+.page-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 button:disabled {
@@ -272,6 +355,7 @@ button:disabled {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-contrast);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
 #extract-selected:hover:not(:disabled),
@@ -308,13 +392,24 @@ button:disabled {
 }
 
 #status {
-  min-height: 1.5rem;
+  min-height: 2.2rem;
   margin-top: 1rem;
+}
+
+#status[data-kind] {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+  font-size: 0.9rem;
 }
 
 #status[data-kind='error'] {
   color: var(--error);
   font-weight: 600;
+  background: color-mix(in srgb, var(--error) 8%, var(--card));
+  border-color: color-mix(in srgb, var(--error) 30%, var(--border));
 }
 
 #status[data-kind='busy']::after {

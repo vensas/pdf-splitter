@@ -214,6 +214,35 @@ async function runAction(label: string, action: () => Promise<void>): Promise<vo
   }
 }
 
+// --- Theme ------------------------------------------------------------------
+
+type Theme = 'auto' | 'light' | 'dark';
+const THEME_ORDER: Theme[] = ['auto', 'light', 'dark'];
+const THEME_LABELS: Record<Theme, string> = { auto: 'Auto', light: 'Light', dark: 'Dark' };
+const themeLabel = mustGet<HTMLElement>('#theme-label');
+
+function applyTheme(theme: Theme): void {
+  if (theme === 'auto') {
+    delete document.documentElement.dataset['theme'];
+  } else {
+    document.documentElement.dataset['theme'] = theme;
+  }
+  themeLabel.textContent = THEME_LABELS[theme];
+}
+
+function storedTheme(): Theme {
+  const value = localStorage.getItem('theme');
+  return value === 'light' || value === 'dark' ? value : 'auto';
+}
+
+applyTheme(storedTheme());
+
+mustGet<HTMLButtonElement>('#theme-toggle').addEventListener('click', () => {
+  const next = THEME_ORDER[(THEME_ORDER.indexOf(storedTheme()) + 1) % THEME_ORDER.length]!;
+  localStorage.setItem('theme', next);
+  applyTheme(next);
+});
+
 // --- Wire up the UI ---------------------------------------------------------
 
 mustGet<HTMLElement>('#app-version').textContent = `v${__APP_VERSION__}`;
