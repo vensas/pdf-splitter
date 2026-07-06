@@ -22,6 +22,11 @@ const pageGrid = mustGet<HTMLElement>('#page-grid');
 const selectionLabel = mustGet<HTMLElement>('#selection-count');
 const rangeInput = mustGet<HTMLInputElement>('#range-input');
 const statusLine = mustGet<HTMLElement>('#status');
+const previewPane = mustGet<HTMLElement>('#preview-pane');
+const previewPlaceholder = mustGet<HTMLElement>('#preview-placeholder');
+const previewFigure = mustGet<HTMLElement>('#preview-figure');
+const previewCanvas = mustGet<HTMLCanvasElement>('#preview-canvas');
+const previewLabel = mustGet<HTMLElement>('#preview-label');
 
 function mustGet<T extends Element>(selector: string): T {
   const element = document.querySelector<T>(selector);
@@ -57,6 +62,55 @@ function togglePage(index: number, card: HTMLElement): void {
     card.classList.add('selected');
   }
   updateSelectionLabel();
+  showPreview(index, card);
+}
+
+let previewRequest = 0;
+// pdf.js forbids concurrent render() calls on one canvas, so renders are chained.
+let previewChain: Promise<void> = Promise.resolve();
+
+function showPreview(index: number, card: HTMLElement | null): void {
+  if (!state) return;
+  const request = ++previewRequest;
+  const preview = state.preview;
+
+  for (const other of pageGrid.querySelectorAll('.page-card.previewed')) {
+    other.classList.remove('previewed');
+  }
+  card?.classList.add('previewed');
+
+  previewPlaceholder.hidden = true;
+  previewFigure.hidden = false;
+  previewLabel.textContent = `Page ${index + 1} of ${preview.pageCount}`;
+
+  previewChain = previewChain.then(async () => {
+    // A newer click superseded this one while it waited in the queue.
+    if (request !== previewRequest) return;
+
+    // Render at the pane's actual width so text is readable, with a sane floor.
+    const paneStyle = getComputedStyle(previewPane);
+    const width = Math.max(
+      320,
+      previewPane.clientWidth - parseFloat(paneStyle.paddingLeft) - parseFloat(paneStyle.paddingRight),
+    );
+
+    try {
+      await preview.renderPage(index, previewCanvas, width);
+    } catch {
+      if (request === previewRequest) {
+        previewFigure.hidden = true;
+        previewPlaceholder.hidden = false;
+        previewPlaceholder.textContent = 'Preview unavailable for this page.';
+      }
+    }
+  });
+}
+
+function resetPreviewPane(): void {
+  previewRequest++;
+  previewFigure.hidden = true;
+  previewPlaceholder.hidden = false;
+  previewPlaceholder.textContent = 'Click a page to see a large preview here.';
 }
 
 async function openFile(file: File): Promise<void> {
@@ -77,9 +131,12 @@ async function openFile(file: File): Promise<void> {
     pageCountLabel.textContent = `${preview.pageCount} page${preview.pageCount === 1 ? '' : 's'}`;
     dropZone.classList.add('compact');
     workspace.hidden = false;
+    resetPreviewPane();
 
     await renderGrid();
     updateSelectionLabel();
+    // Show the first page large right away so the pane isn't empty.
+    showPreview(0, pageGrid.querySelector<HTMLElement>('.page-card'));
     setStatus('Click pages to select them, or use a range below.');
   } catch (error) {
     setStatus(errorMessage(error, 'Could not read this PDF. It may be corrupted or password-protected.'), 'error');
