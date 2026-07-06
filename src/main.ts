@@ -107,15 +107,19 @@ function showPreview(index: number, card: HTMLElement | null): void {
     // A newer click superseded this one while it waited in the queue.
     if (request !== previewRequest) return;
 
-    // Render at the pane's actual width so text is readable, with a sane floor.
+    // Render at the pane's actual width so text is readable, with a sane
+    // floor, capped to the pane's height so the preview never scrolls.
     const paneStyle = getComputedStyle(previewPane);
     const width = Math.max(
       320,
       previewPane.clientWidth - parseFloat(paneStyle.paddingLeft) - parseFloat(paneStyle.paddingRight),
     );
+    const paneMaxHeight = parseFloat(paneStyle.maxHeight); // NaN when 'none' (narrow screens)
+    const captionAllowance = 72; // caption line + figure gap + paddings
+    const maxHeight = Number.isNaN(paneMaxHeight) ? undefined : paneMaxHeight - captionAllowance;
 
     try {
-      await preview.renderPage(index, previewCanvas, width);
+      await preview.renderPage(index, previewCanvas, width, maxHeight);
     } catch {
       if (request === previewRequest) {
         previewFigure.hidden = true;

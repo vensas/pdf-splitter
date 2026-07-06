@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.2 — 2026-07-06
+
+- The large preview no longer scrolls: the PDF section grew taller, the
+  preview column wider, and the rendered page is capped to fit the pane
+
 ## 1.2.1 — 2026-07-06
 
 - The large preview only appears while pages are selected, so it can no
