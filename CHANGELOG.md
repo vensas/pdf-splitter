@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1 — 2026-07-06
+
+- The large preview only appears while pages are selected, so it can no
+  longer be mistaken for a selection: no more automatic preview of page 1
+  after loading, deselecting the previewed page falls back to the most
+  recently selected one, and clearing the selection empties the pane
+
 ## 1.2.0 — 2026-07-06
 
 - vensas branding: logo in the header (theme-aware light/dark variants),
