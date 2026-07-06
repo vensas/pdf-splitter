@@ -1,6 +1,6 @@
 # PDF Splitter
 
-Split and extract PDF pages — entirely in your browser.
+A [vensas](https://www.vensas.de) product — split and extract PDF pages, entirely in your browser.
 
 **➜ [Use it here](https://vensas.github.io/pdf-splitter/)**
 
