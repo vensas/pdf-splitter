@@ -8,6 +8,12 @@ updates:
       time: "06:00"
       timezone: Europe/Berlin
     groups:
+      # vitest and @vitest/* are peer-locked to the same major — bumping one
+      # without the others can never pass CI, so they always travel together.
+      vitest:
+        patterns:
+          - vitest
+          - "@vitest/*"
       # Collect routine bumps in one PR; majors stay separate for review.
       minor-and-patch:
         update-types:
