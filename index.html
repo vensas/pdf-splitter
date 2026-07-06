@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Split PDF pages entirely in your browser. No upload, no server — your files never leave your machine." />
+    <title>PDF Splitter</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✂️</text></svg>" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <h1>PDF Splitter</h1>
+        <p class="tagline">
+          Split and extract PDF pages — entirely in your browser.
+          <strong>Your files never leave your machine.</strong>
+        </p>
+      </header>
+
+      <section id="drop-zone" class="drop-zone" role="button" tabindex="0" aria-label="Choose or drop a PDF file">
+        <p><strong>Drop a PDF here</strong> or click to choose a file</p>
+        <input id="file-input" type="file" accept="application/pdf,.pdf" hidden />
+      </section>
+
+      <section id="workspace" hidden>
+        <div class="file-info">
+          <span id="file-name"></span>
+          <span id="page-count" class="muted"></span>
+        </div>
+
+        <div class="toolbar">
+          <button id="select-all" type="button">Select all / none</button>
+          <span id="selection-count" class="muted">No pages selected</span>
+        </div>
+
+        <div id="page-grid" class="page-grid"></div>
+
+        <div class="actions">
+          <div class="action-group">
+            <h2>Selected pages</h2>
+            <button id="extract-selected" type="button" data-needs-selection disabled>
+              Extract as one PDF
+            </button>
+            <button id="selected-as-zip" type="button" data-needs-selection disabled>
+              One PDF per page (ZIP)
+            </button>
+          </div>
+
+          <div class="action-group">
+            <h2>By page ranges</h2>
+            <div class="range-row">
+              <input id="range-input" type="text" placeholder="e.g. 1-3, 5, 8-10" aria-label="Page ranges" />
+              <button id="split-ranges" type="button">Split</button>
+            </div>
+            <p class="muted small">Each comma-separated range becomes its own PDF.</p>
+          </div>
+
+          <div class="action-group">
+            <h2>Whole document</h2>
+            <button id="split-all" type="button">Split into single pages (ZIP)</button>
+          </div>
+        </div>
+      </section>
+
+      <p id="status" role="status"></p>
+
+      <footer>
+        <p class="muted small">
+          Open source · All processing happens locally via
+          <a href="https://pdf-lib.js.org" rel="noopener">pdf-lib</a> and
+          <a href="https://mozilla.github.io/pdf.js/" rel="noopener">pdf.js</a> ·
+          <a href="https://github.com/vensas/pdf-splitter" rel="noopener">Source on GitHub</a>
+        </p>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
