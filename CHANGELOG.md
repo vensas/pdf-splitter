@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.4.1 — 2026-07-06
+
+- The status/hint message moved from below the actions to directly under
+  the drop zone, so "use a page range below" points the right way
+- WCAG 2.1 AA remediation (verified with axe-core in light and dark,
+  empty and loaded states — zero violations):
+  - Muted text, links, error text, and primary-button text meet 4.5:1
+    contrast (darkened ocean/gray shades; dark text on ocean buttons)
+  - Focus rings, control borders, selected-page borders, and the drop
+    zone boundary meet 3:1 non-text contrast
+  - Selected pages are marked with a check mark, not color alone, and
+    expose their state via aria-pressed
+  - The drop zone is keyboard-operable (Enter/Space opens the file picker)
+  - The large preview canvas is labelled for screen readers
+  - Animations and transitions are disabled under prefers-reduced-motion
+
 ## 1.4.0 — 2026-07-06
 
 - Theme toggle in the header: Auto / Light / Dark, persisted across visits

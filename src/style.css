@@ -14,16 +14,30 @@
 }
 
 :root {
-  --accent: light-dark(#6abea7, #88cbb9); /* brand ocean */
-  --accent-contrast: light-dark(#ffffff, #1a2030);
+  --accent: light-dark(#6abea7, #88cbb9); /* brand ocean, fills only */
+  --accent-contrast: #1a2030; /* dark text on ocean passes AA in both themes */
   --accent-hover: light-dark(#4e9f8a, #a5d8ca);
-  --border: light-dark(#cac8cf, #3a4252);
+  /* Darkened ocean for text, links, borders, and focus rings — base ocean
+     is too light against white to meet WCAG AA (4.5:1 text, 3:1 UI). */
+  --accent-strong: light-dark(#2e7263, #88cbb9);
+  --border: light-dark(#cac8cf, #3a4252); /* decorative container borders */
+  --control-border: light-dark(#6f6d7a, #7a8496); /* interactive controls, >= 3:1 */
   --surface: light-dark(#f5f5f7, #151a24);
   --card: light-dark(#ffffff, #1a2030);
   --text: light-dark(#2c3341, #e8eef0); /* brand jet / light content */
-  --text-muted: light-dark(#9b99a4, #a5afbc);
-  --error: light-dark(#e05353, #f37a7a);
+  --text-muted: light-dark(#66646f, #a5afbc);
+  --error: light-dark(#b33636, #f37a7a);
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 * {
@@ -130,7 +144,7 @@ header h1 {
 }
 
 .drop-zone {
-  border: 2px dashed color-mix(in srgb, var(--accent) 45%, var(--border));
+  border: 2px dashed var(--accent-strong);
   border-radius: 1rem;
   padding: 2.5rem 1.5rem;
   text-align: center;
@@ -146,13 +160,13 @@ header h1 {
 .drop-icon {
   width: 2.5rem;
   height: 2.5rem;
-  color: var(--accent);
+  color: var(--accent-strong);
 }
 
 .drop-zone:hover,
 .drop-zone:focus-visible,
 .drop-zone.dragging {
-  border-color: var(--accent);
+  border-color: var(--accent-strong);
   background: color-mix(in srgb, var(--accent) 8%, var(--card));
   box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 18%, transparent);
 }
@@ -248,7 +262,7 @@ header h1 {
   align-items: center;
   gap: 0.25rem;
   padding: 0.5rem;
-  border: 2px solid var(--border);
+  border: 2px solid var(--control-border);
   border-radius: 0.5rem;
   background: var(--card);
   cursor: pointer;
@@ -256,17 +270,17 @@ header h1 {
 }
 
 .page-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  border-color: var(--accent-strong);
 }
 
 .page-card.selected {
-  border-color: var(--accent);
+  border-color: var(--accent-strong);
   background: color-mix(in srgb, var(--accent) 8%, var(--card));
 }
 
 /* The page currently shown large in the preview pane. */
 .page-card.previewed {
-  outline: 2px dotted color-mix(in srgb, var(--accent) 60%, transparent);
+  outline: 2px dotted var(--accent-strong);
   outline-offset: 2px;
 }
 
@@ -281,8 +295,13 @@ header h1 {
   color: var(--text-muted);
 }
 
+/* Selection is marked by a check mark as well, not by color alone. */
+.page-card.selected .page-number::before {
+  content: '✓ ';
+}
+
 .page-card.selected .page-number {
-  color: var(--accent);
+  color: var(--accent-strong);
   font-weight: 700;
 }
 
@@ -324,7 +343,7 @@ header h1 {
 
 button {
   padding: 0.5rem 0.9rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border);
   border-radius: 0.55rem;
   background: var(--card);
   font: inherit;
@@ -335,13 +354,13 @@ button {
 
 button:hover:not(:disabled) {
   background: color-mix(in srgb, var(--accent) 10%, var(--card));
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  border-color: var(--accent-strong);
 }
 
 button:focus-visible,
 .drop-zone:focus-visible,
 .page-card:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-strong);
   outline-offset: 2px;
 }
 
@@ -379,11 +398,16 @@ button:disabled {
   flex: 1;
   min-width: 0;
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border);
   border-radius: 0.5rem;
   background: var(--surface);
   font: inherit;
   color: inherit;
+}
+
+.range-row input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
 }
 
 .range-row button {
@@ -418,7 +442,7 @@ button:disabled {
   width: 0.85em;
   height: 0.85em;
   margin-left: 0.4rem;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--accent-strong);
   border-top-color: transparent;
   border-radius: 50%;
   vertical-align: -0.1em;
@@ -438,5 +462,5 @@ footer {
 }
 
 footer a {
-  color: var(--accent);
+  color: var(--accent-strong);
 }

@@ -61,6 +61,8 @@
         <input id="file-input" type="file" accept="application/pdf,.pdf" hidden />
       </section>
 
+      <p id="status" role="status"></p>
+
       <section id="workspace" hidden>
         <div class="file-info">
           <span id="file-name"></span>
@@ -77,7 +79,7 @@
           <aside id="preview-pane" class="preview-pane" aria-label="Large page preview">
             <p id="preview-placeholder" class="muted">Select a page to see a large preview here.</p>
             <figure id="preview-figure" hidden>
-              <canvas id="preview-canvas"></canvas>
+              <canvas id="preview-canvas" role="img" aria-labelledby="preview-label"></canvas>
               <figcaption id="preview-label" class="muted small"></figcaption>
             </figure>
           </aside>
@@ -109,8 +111,6 @@
           </div>
         </div>
       </section>
-
-      <p id="status" role="status"></p>
 
       <footer>
         <p class="muted small">

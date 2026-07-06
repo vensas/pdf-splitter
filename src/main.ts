@@ -61,6 +61,7 @@ function togglePage(index: number, card: HTMLElement): void {
     state.selected.add(index);
     card.classList.add('selected');
   }
+  card.setAttribute('aria-pressed', String(state.selected.has(index)));
   updateSelectionLabel();
 
   if (state.selected.has(index)) {
@@ -163,7 +164,7 @@ async function openFile(file: File): Promise<void> {
 
     await renderGrid();
     updateSelectionLabel();
-    setStatus('Click pages to select them, or use a range below.');
+    setStatus('Click pages to select them, or use a page range below.');
   } catch (error) {
     setStatus(errorMessage(error, 'Could not read this PDF. It may be corrupted or password-protected.'), 'error');
   }
@@ -178,6 +179,7 @@ async function renderGrid(): Promise<void> {
     card.type = 'button';
     card.className = 'page-card';
     card.setAttribute('aria-label', `Page ${index + 1}`);
+    card.setAttribute('aria-pressed', 'false');
 
     const canvas = document.createElement('canvas');
     const label = document.createElement('span');
@@ -248,6 +250,12 @@ mustGet<HTMLButtonElement>('#theme-toggle').addEventListener('click', () => {
 mustGet<HTMLElement>('#app-version').textContent = `v${__APP_VERSION__}`;
 
 dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    fileInput.click();
+  }
+});
 dropZone.addEventListener('dragover', (event) => {
   event.preventDefault();
   dropZone.classList.add('dragging');
@@ -272,6 +280,7 @@ mustGet<HTMLButtonElement>('#select-all').addEventListener('click', () => {
   state.selected = allSelected ? new Set() : new Set(Array.from({ length: state.preview.pageCount }, (_, i) => i));
   for (const [position, card] of pageGrid.querySelectorAll('.page-card').entries()) {
     card.classList.toggle('selected', state.selected.has(position));
+    card.setAttribute('aria-pressed', String(state.selected.has(position)));
   }
   updateSelectionLabel();
   if (state.selected.size === 0) {
