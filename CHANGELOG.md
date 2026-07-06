@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 — 2026-07-06
+
+- vensas branding: logo in the header (theme-aware light/dark variants),
+  brand color palette (ocean primary, jet surfaces) in both themes
+- Favicon now uses the vensas mark and adapts to the browser theme
+- Footer links to the vensas.de imprint page and the vensas website
+
 ## 1.1.0 — 2026-07-06
 
 - Large preview pane next to the page grid: clicking a page shows it big and

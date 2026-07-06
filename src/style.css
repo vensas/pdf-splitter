@@ -1,12 +1,15 @@
+/* vensas brand palette — mirrors vensas-next tailwind.config.js */
 :root {
   color-scheme: light dark;
-  --accent: #2563eb;
-  --accent-contrast: #ffffff;
-  --border: light-dark(#d4d4d8, #3f3f46);
-  --surface: light-dark(#fafafa, #18181b);
-  --card: light-dark(#ffffff, #27272a);
-  --text-muted: light-dark(#71717a, #a1a1aa);
-  --error: light-dark(#b91c1c, #f87171);
+  --accent: light-dark(#6abea7, #88cbb9); /* brand ocean */
+  --accent-contrast: light-dark(#ffffff, #1a2030);
+  --accent-hover: light-dark(#4e9f8a, #a5d8ca);
+  --border: light-dark(#cac8cf, #3a4252);
+  --surface: light-dark(#f5f5f7, #151a24);
+  --card: light-dark(#ffffff, #1a2030);
+  --text: light-dark(#2c3341, #e8eef0); /* brand jet / light content */
+  --text-muted: light-dark(#9b99a4, #a5afbc);
+  --error: light-dark(#e05353, #f37a7a);
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
@@ -17,6 +20,7 @@
 body {
   margin: 0;
   background: var(--surface);
+  color: var(--text);
   line-height: 1.5;
 }
 
@@ -24,6 +28,31 @@ body {
   max-width: 64rem;
   margin: 0 auto;
   padding: 2rem 1.25rem 3rem;
+}
+
+.brand {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+}
+
+.logo {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+.logo-dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo-light {
+    display: none;
+  }
+
+  .logo-dark {
+    display: block;
+  }
 }
 
 header h1 {
@@ -245,7 +274,8 @@ button:disabled {
 
 #extract-selected:hover:not(:disabled),
 #split-ranges:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--accent) 85%, black);
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 #extract-selected:disabled {
