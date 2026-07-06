@@ -7,7 +7,7 @@ const THUMBNAIL_WIDTH = 180;
 
 export interface LoadedPdf {
   pageCount: number;
-  renderPage(pageIndex: number, canvas: HTMLCanvasElement): Promise<void>;
+  renderPage(pageIndex: number, canvas: HTMLCanvasElement, cssWidth?: number): Promise<void>;
   destroy(): void;
 }
 
@@ -21,15 +21,15 @@ export async function loadForPreview(bytes: Uint8Array): Promise<LoadedPdf> {
   return {
     pageCount: document.numPages,
 
-    async renderPage(pageIndex: number, canvas: HTMLCanvasElement): Promise<void> {
+    async renderPage(pageIndex: number, canvas: HTMLCanvasElement, cssWidth = THUMBNAIL_WIDTH): Promise<void> {
       const page = await document.getPage(pageIndex + 1);
       const baseViewport = page.getViewport({ scale: 1 });
-      const scale = (THUMBNAIL_WIDTH / baseViewport.width) * (window.devicePixelRatio || 1);
+      const scale = (cssWidth / baseViewport.width) * (window.devicePixelRatio || 1);
       const viewport = page.getViewport({ scale });
 
       canvas.width = viewport.width;
       canvas.height = viewport.height;
-      canvas.style.width = `${THUMBNAIL_WIDTH}px`;
+      canvas.style.width = `${cssWidth}px`;
 
       const context = canvas.getContext('2d');
       if (!context) {
