@@ -1,6 +1,6 @@
 {
   "name": "pdf-splitter",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "Split PDF pages entirely in your browser. No upload, no server — your files never leave your machine.",
   "type": "module",
   "private": true,

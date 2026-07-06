@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0 — 2026-07-06
+
+- The footer shows the current version, injected from package.json at
+  build time
+- Company name is now written as "vensas GmbH" throughout (footer, page
+  title, logo alt text, meta description)
+
 ## 1.2.2 — 2026-07-06
 
 - The large preview no longer scrolls: the PDF section grew taller, the

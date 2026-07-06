@@ -216,6 +216,8 @@ async function runAction(label: string, action: () => Promise<void>): Promise<vo
 
 // --- Wire up the UI ---------------------------------------------------------
 
+mustGet<HTMLElement>('#app-version').textContent = `v${__APP_VERSION__}`;
+
 dropZone.addEventListener('click', () => fileInput.click());
 dropZone.addEventListener('dragover', (event) => {
   event.preventDefault();
