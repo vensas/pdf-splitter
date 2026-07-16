@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.3 — 2026-07-17
+
+- Fixed broken asset loading (404s) on the custom domain: the Vite `base`
+  now targets the site root for pdf-splitter.apps.vensas.de instead of the
+  old vensas.github.io/pdf-splitter path
+- Updated Open Graph/Twitter meta URLs and README links to the custom domain
+
 ## 1.4.2 — 2026-07-17
 
 - Switched the package manager from npm to pnpm: pnpm-lock.yaml replaces

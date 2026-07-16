@@ -2,11 +2,11 @@
 
 [![Test & Deploy](https://github.com/vensas/pdf-splitter/actions/workflows/deploy.yml/badge.svg)](https://github.com/vensas/pdf-splitter/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-6ABEA7)](LICENSE)
-[![Live](https://img.shields.io/badge/live-vensas.github.io%2Fpdf--splitter-2C3341)](https://vensas.github.io/pdf-splitter/)
+[![Live](https://img.shields.io/badge/live-pdf--splitter.apps.vensas.de-2C3341)](https://pdf-splitter.apps.vensas.de/)
 
 A [vensas GmbH](https://www.vensas.de) product — split and extract PDF pages, **entirely in your browser**.
 
-**➜ [Open PDF Splitter](https://vensas.github.io/pdf-splitter/)**
+**➜ [Open PDF Splitter](https://pdf-splitter.apps.vensas.de/)**
 
 ![PDF Splitter screenshot](docs/screenshot.png)
 
@@ -30,7 +30,7 @@ and anything else you'd rather not hand to a stranger's server.
 
 ## Usage
 
-1. Open the [app](https://vensas.github.io/pdf-splitter/) and drop a PDF onto the page.
+1. Open the [app](https://pdf-splitter.apps.vensas.de/) and drop a PDF onto the page.
 2. Click pages to select them — the clicked page shows up as a large preview on the right.
 3. Pick an action:
    - **Extract as one PDF** — selected pages become a single document.
@@ -63,7 +63,8 @@ The interesting code lives in three small modules:
 
 Every push to `main` runs the tests and deploys to GitHub Pages via
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Pull requests get the
-test job only. The Vite `base` is set to `/pdf-splitter/` to match the Pages URL.
+test job only. The site is served from the custom domain
+[pdf-splitter.apps.vensas.de](https://pdf-splitter.apps.vensas.de/), so the Vite `base` is `/`.
 
 > Note: if a Pages deployment fails transiently, trigger a fresh run
 > (`gh workflow run deploy.yml`) instead of re-running the failed job — a re-run
