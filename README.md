@@ -43,12 +43,12 @@ Output files are named after the source, e.g. `report_pages_2-4.pdf` or `report_
 ## Development
 
 ```bash
-npm install
-npm run dev            # local dev server with hot reload
-npm test               # unit tests (vitest)
-npm run test:coverage  # tests with coverage (80% threshold on core logic)
-npm run build          # type-check (strict) + production build to dist/
-npm run preview        # serve the production build locally
+pnpm install
+pnpm run dev            # local dev server with hot reload
+pnpm test               # unit tests (vitest)
+pnpm run test:coverage  # tests with coverage (80% threshold on core logic)
+pnpm run build          # type-check (strict) + production build to dist/
+pnpm run preview        # serve the production build locally
 ```
 
 The interesting code lives in three small modules:

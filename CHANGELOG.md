@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.2 — 2026-07-17
+
+- Switched the package manager from npm to pnpm: pnpm-lock.yaml replaces
+  package-lock.json, CI installs with `pnpm install --frozen-lockfile`,
+  and the pnpm version is pinned via the `packageManager` field
+
 ## 1.4.1 — 2026-07-06
 
 - The status/hint message moved from below the actions to directly under

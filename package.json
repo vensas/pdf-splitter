@@ -1,9 +1,10 @@
 {
   "name": "pdf-splitter",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Split PDF pages entirely in your browser. No upload, no server — your files never leave your machine.",
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@10.12.2",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
